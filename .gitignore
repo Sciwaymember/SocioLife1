@@ -1,2 +1,5 @@
 environment_test.py
 .vscode/launch.json
+__pycache__/environment.cpython-310.pyc
+__pycache__/geometry.cpython-310.pyc
+__pycache__/socio_elements.cpython-310.pyc

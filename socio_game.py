@@ -66,6 +66,5 @@ while running:
     field.check_collision() # Checking cells for collisions
 
     clock.tick(FPS)
-    print(clock.get_time())
     pygame.display.flip()
     

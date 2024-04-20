@@ -117,8 +117,8 @@ class Field:
         self.cell_speed = cell_speed
 
         self.grid_cols, self.grid_rows = (
-            int(width / (cell_size * 4)),
-            int(height / (cell_size * 4)),
+            int(width / (cell_size * 2)),
+            int(height / (cell_size * 2)),
         )
 
         self.grid = Grid(self.grid_cols, self.grid_rows, width + 1, height + 1)
@@ -199,15 +199,18 @@ class Field:
                 # This loop for all cells that placed in intersected quadrants
 
                 for other_cell in r.cells:
-                    if cell.collidecell(other_cell) and cell != other_cell:
+
+                    is_collides, collision_degree = cell.collidecell(other_cell)
+
+                    if is_collides and cell != other_cell:
                         # Checking cell for a collision
 
                         self.grid.quadrants[int(cell.y / self.grid.row_height)][
                             int(cell.x / self.grid.col_width)
                         ].remove(cell)
 
-                        # moving from the another cell of collide
-                        cell.move_from(other_cell, 1, self.cell_speed)
+                        # moving from the another cell of collide for step of the collision degree
+                        cell.move_from(other_cell, 1, collision_degree)
 
                         self.grid.quadrants[int(cell.y / self.grid.row_height)][
                             int(cell.x / self.grid.col_width)

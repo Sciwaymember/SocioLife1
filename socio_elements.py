@@ -47,9 +47,9 @@ class Cell(Point):
                 self.move(self.dir_step)
 
     def collidecell(self, cell):
-        """Check for the collision"""
-
-        return self.distance_to(cell) <= self.radius * 2
+        """Check for the collision and return collision degree"""
+        collision_degree = self.radius * 2 - self.distance_to(cell)
+        return self.distance_to(cell) <= self.radius * 2, collision_degree
 
 
 class CallPoint(Point):
