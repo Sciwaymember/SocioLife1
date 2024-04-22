@@ -8,7 +8,7 @@ FPS = 120
 
 # Cells settings
 cell_size = 8
-cells_number = 100
+cells_number = 50
 cell_speed = 100
 cell_speed_per_frame = cell_speed / FPS
 
@@ -66,5 +66,6 @@ while running:
     field.check_collision() # Checking cells for collisions
 
     clock.tick(FPS)
+    pygame.display.set_caption(f"Socio Life | {int(clock.get_fps())} FPS")
     pygame.display.flip()
     
