@@ -1,3 +1,4 @@
+from copy import copy
 import random
 
 from numpy import sqrt
@@ -145,19 +146,10 @@ class Field:
         """Make a step for all cells in the direction of the flag"""
 
         if self.flag.is_exist:
-            for c in self.cells:
-                if not ((c.x == self.flag.x) & (c.y == self.flag.y)):
+            for cell in self.cells:
+                if not ((cell.x == self.flag.x) & (cell.y == self.flag.y)):
                     # Cell moving and updating on the grid
-
-                    self.grid.quadrants[int(c.y / self.grid.row_height)][
-                        int(c.x / self.grid.col_width)
-                    ].remove(c) # Removing cell from the quadrant before move
-
-                    c.move_to(self.flag, 1, self.cell_speed)
-
-                    self.grid.quadrants[int(c.y / self.grid.row_height)][
-                        int(c.x / self.grid.col_width)
-                    ].insert(c) # Inserting cell in a new quadrant from the actuall coordinates
+                    self.cell_move_to(cell, self.flag, self.cell_speed)
 
     def rand_move(self):
         """Make a step in a random direction for all cells"""
@@ -178,15 +170,7 @@ class Field:
                 y = y + 1
 
             # Cell moving and updating on the grid
-            self.grid.quadrants[int(cell.y / self.grid.row_height)][
-                int(cell.x / self.grid.col_width)
-            ].remove(cell)
-
-            cell.move(Point(x, y))
-
-            self.grid.quadrants[int(cell.y / self.grid.row_height)][
-                int(cell.x / self.grid.col_width)
-            ].insert(cell)
+            self.cell_move(cell, Point(x, y))
 
     def check_collision(self):
         """Checking for collisions in the quadrants that intercects cell"""
@@ -204,17 +188,8 @@ class Field:
 
                     if is_collides and cell != other_cell:
                         # Checking cell for a collision
-
-                        self.grid.quadrants[int(cell.y / self.grid.row_height)][
-                            int(cell.x / self.grid.col_width)
-                        ].remove(cell)
-
                         # moving from the another cell of collide for step of the collision degree
-                        cell.move_from(other_cell, 1, collision_degree)
-
-                        self.grid.quadrants[int(cell.y / self.grid.row_height)][
-                            int(cell.x / self.grid.col_width)
-                        ].insert(cell)
+                        self.cell_move_from(cell, other_cell, collision_degree)
 
 
     def cell_quadrants(self, cell):
@@ -232,3 +207,35 @@ class Field:
                 cell_quads.append(quad)
 
         return cell_quads
+    
+    def cell_move_from(self, cell, point, step):
+        """Moving cell from the specified point withou going out of boundaries"""
+        new_cell = copy(cell)
+
+        new_cell.move_from(point, 1, step)
+
+        if new_cell.x < self.width and new_cell.y < self.height:
+
+            self.cell_move(cell, new_cell)
+            
+    def cell_move_to(self, cell, point, step):
+        """Moving cell to the specified point withou going out of boundaries"""
+        new_cell = copy(cell)
+
+        new_cell.move_to(point, 1, step)
+
+        if new_cell.x < self.width and new_cell.y < self.height:
+
+            self.cell_move(cell, new_cell)
+            
+    def cell_move(self, cell, point):
+        
+        self.grid.quadrants[int(cell.y / self.grid.row_height)][
+                            int(cell.x / self.grid.col_width)
+                            ].remove(cell) # Removing cell from the quadrant before move
+        
+        cell.move(point)
+
+        self.grid.quadrants[int(cell.y / self.grid.row_height)][
+                            int(cell.x / self.grid.col_width)
+                            ].insert(cell) # Inserting cell in a new quadrant from the actuall coordinates
