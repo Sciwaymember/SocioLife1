@@ -210,23 +210,23 @@ class Field:
     
     def cell_move_from(self, cell, point, step):
         """Moving cell from the specified point withou going out of boundaries"""
-        new_cell = copy(cell)
+        copied_cell = copy(cell)
 
-        new_cell.move_from(point, 1, step)
+        copied_cell.move_from(point, 1, step)
 
-        if new_cell.x < self.width and new_cell.y < self.height:
+        if copied_cell.x < self.width and copied_cell.y < self.height:
 
-            self.cell_move(cell, new_cell)
+            self.cell_move(cell, copied_cell)
             
     def cell_move_to(self, cell, point, step):
         """Moving cell to the specified point withou going out of boundaries"""
-        new_cell = copy(cell)
+        copied_cell = copy(cell)
 
-        new_cell.move_to(point, 1, step)
+        copied_cell.move_to(point, 1, step)
 
-        if new_cell.x < self.width and new_cell.y < self.height:
+        if copied_cell.x < self.width and copied_cell.y < self.height:
 
-            self.cell_move(cell, new_cell)
+            self.cell_move(cell, copied_cell)
             
     def cell_move(self, cell, point):
         
