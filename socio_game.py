@@ -1,4 +1,6 @@
 import pygame
+from tkinter import ttk
+from tkinter import Tk
 from environment import Field
 
 # Pygame general settings
@@ -8,10 +10,35 @@ FPS = 120
 
 # Cells settings
 cell_size = 8
-cells_number = 50
 cell_speed = 100
 cell_speed_per_frame = cell_speed / FPS
+cells_number = 0
 
+def get_cell_number():
+    global cells_number
+    try:
+        result = int(entry.get())
+        cells_number = result
+        root.quit()
+    except ValueError:
+        label.pack()
+    
+
+root = Tk()
+root.title("Setting")
+root.geometry("200x100+400+200")
+
+ttk.Label(text="Enter cell number").pack()
+
+entry = ttk.Entry()
+entry.pack()
+
+btn = ttk.Button(text="Click", command=get_cell_number)
+btn.pack()
+
+label = ttk.Label(text="Enter an integer")
+
+root.mainloop()
 pygame.init()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -44,7 +71,7 @@ def drawfield():
 
 # Game loop
 running = True
-while running:
+while running and cells_number != 0:
 
     # Game events
     for event in pygame.event.get():
